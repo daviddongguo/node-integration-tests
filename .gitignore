@@ -1,0 +1,7 @@
+/node_modules
+/coverage
+/build
+/log
+
+/.env
+/yarn-error.log
