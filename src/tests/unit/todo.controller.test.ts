@@ -21,10 +21,14 @@ describe('TodoController.createTodo', () => {
     res = httpMocks.createResponse()
     next = () => {}
     req.body = newTodo
-    spy = jest.spyOn(Todo, 'create').mockImplementation((value) => {
-      void (async () => {
-        await Promise.resolve(value)
-      })()
+    // spy = jest.spyOn(Todo, 'create').mockImplementation((json) => {
+    // void (async () => {
+    //  await Promise.resolve(json)
+    // })()
+    // })
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    spy = jest.spyOn(Todo, 'create').mockImplementation((json) => {
+      return Promise.resolve(json)
     })
   })
 
@@ -56,9 +60,6 @@ describe('TodoController.createTodo', () => {
     expect(res._isEndCalled()).toBe(true)
   })
   it('should return json body in response', async () => {
-    Todo.create = jest.fn().mockImplementation(() => {
-      return Promise.resolve(newTodo)
-    })
     await TodoController.createTodo(req, res, next)
     expect(res._getJSONData()).toStrictEqual(newTodo)
   })
