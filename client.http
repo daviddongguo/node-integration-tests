@@ -1,1 +1,10 @@
-GET http://localhost:3000/
+GET http://localhost:3000/ping
+
+###
+
+POST http://localhost:3000/todos HTTP/1.1
+content-type: application/json
+
+{
+  "title": "sample"
+}

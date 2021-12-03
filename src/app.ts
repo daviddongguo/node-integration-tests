@@ -1,10 +1,16 @@
 import express from 'express'
+import morgan from 'morgan'
+import { TodoRouter } from './routes/todo.routes'
+
 const app = express()
 
-app.get('/', (req, res) => {
-  res.json('hi, therer,')
+app.use(express.json())
+app.use(morgan('tiny'))
+
+app.get('/ping', (req, res) => {
+  res.status(200).json('hi, there,')
 })
 
-app.listen(3000, () => {
-  console.log('Server is running on 3000')
-})
+app.use('/todos', TodoRouter)
+
+export default app

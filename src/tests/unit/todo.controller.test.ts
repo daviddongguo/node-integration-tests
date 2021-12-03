@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import httpMocks, { MockResponse } from 'node-mocks-http'
 import TodoController from '../../controllers/todo.controller'
-import TodoModel from '../../model/todo.model'
+import { Todo } from '../../model/todo.model'
 import newTodo from '../mock-data/new-todo.json'
 
-TodoModel.create = jest.fn()
+Todo.create = jest.fn()
 
 let req: Request, res: MockResponse<Response>, next: NextFunction
 beforeEach(() => {
@@ -24,7 +24,7 @@ describe('TodoController.createTodo', () => {
 
   it('should call TodoModel.create', async () => {
     await TodoController.createTodo(req, res, next)
-    expect(TodoModel.create).toBeCalledWith(newTodo)
+    expect(Todo.create).toBeCalledWith(newTodo)
   })
   it('should return 201 response status code', async () => {
     await TodoController.createTodo(req, res, next)
@@ -32,7 +32,7 @@ describe('TodoController.createTodo', () => {
     expect(res._isEndCalled()).toBe(true)
   })
   it('should return json body in response', async () => {
-    TodoModel.create = jest.fn().mockImplementation(() => {
+    Todo.create = jest.fn().mockImplementation(() => {
       return Promise.resolve(newTodo)
     })
     await TodoController.createTodo(req, res, next)
