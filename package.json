@@ -30,7 +30,7 @@
   },
   "scripts": {
     "dev": "ts-node-dev ./src/server.ts",
-    "test": "jest --watchAll",
+    "test": "jest --watchAll --no-cache --verbose=true --runInBand --detectOpenHandles --forceExit",
     "lint": "eslint --ext .js,.ts src/"
   }
 }

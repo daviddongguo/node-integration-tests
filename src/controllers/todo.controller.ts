@@ -6,9 +6,9 @@ export default {
     try {
       const createModel = await Todo.create(req.body)
       // const createModel = { title: 'Make first unit test without completed' }
-      res.status(201).json(createModel)
+      return res.status(201).json(createModel)
     } catch (error) {
-      next(error)
+      return next(error)
     }
   },
 }
