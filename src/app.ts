@@ -1,6 +1,8 @@
+import { inValidPathHandler } from './routes/inValidPathHandler'
 import express from 'express'
 import morgan from 'morgan'
 import { TodoRouter } from './routes/todo.routes'
+import { errorResponser } from './routes/errorResponser'
 
 const app = express()
 
@@ -12,5 +14,8 @@ app.get('/ping', (req, res) => {
 })
 
 app.use('/todos', TodoRouter)
+
+app.use(inValidPathHandler)
+app.use(errorResponser)
 
 export default app

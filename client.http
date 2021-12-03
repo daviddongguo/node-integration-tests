@@ -8,3 +8,15 @@ content-type: application/json
 {
   "title": "sample"
 }
+
+###
+
+POST http://localhost:3000/todos HTTP/1.1
+content-type: application/json
+
+{ }
+
+###
+
+POST http://localhost:3000/no-existed-path HTTP/1.1
+content-type: application/json

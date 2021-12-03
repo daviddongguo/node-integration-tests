@@ -8,11 +8,10 @@ interface TodoAttrs {
 const TodoSchema = new mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
   },
   done: {
     type: Boolean,
-    required: true,
     default: false,
   },
 })
