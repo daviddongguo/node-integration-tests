@@ -24,4 +24,13 @@ content-type: application/json
 
 ###
 
-GET  http://localhost:3000/todos
+GET  http://localhost:3000/todos/61aa3b1f0443008788bcf6dd
+
+
+###
+
+GET  http://localhost:3000/todos/61aa3b1f0443008788bcf6ddinvalidid
+
+###
+
+GET  http://localhost:3000/todos/61aa3b5dee222f3688bf8efa

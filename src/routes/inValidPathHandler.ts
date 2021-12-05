@@ -1,3 +1,4 @@
+import { HttpError } from './http.error'
 import { Request, Response, NextFunction } from 'express'
 
 export const inValidPathHandler = (
@@ -6,5 +7,5 @@ export const inValidPathHandler = (
   next: NextFunction
 ) => {
   const errMsg = `not found ${req.url}`
-  next(new Error(errMsg))
+  next(new HttpError(errMsg, 404))
 }
