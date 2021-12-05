@@ -1,6 +1,6 @@
 import { HttpError } from '../routes/http.error'
 import { NextFunction, Request, Response } from 'express'
-import { Todo } from '../model/todo.model'
+import { Todo, TodoDoc } from '../model/todo.model'
 import mongoose from 'mongoose'
 
 export default {
@@ -31,6 +31,22 @@ export default {
       }
       const todo = await Todo.findById(id)
       return res.status(200).json(todo)
+    } catch (err) {
+      next(err)
+    }
+  },
+  updateTodo: async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.todoId
+    const toUpdateTodo = req.body as TodoDoc
+    try {
+      const updatedTodo = await Todo.findByIdAndUpdate(id, toUpdateTodo, {
+        new: true,
+        useFindAndModify: false,
+      })
+      if (!updatedTodo) {
+        return next(new HttpError('todo not found', 400))
+      }
+      res.status(200).json(updatedTodo)
     } catch (err) {
       next(err)
     }

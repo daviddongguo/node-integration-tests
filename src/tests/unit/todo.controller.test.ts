@@ -6,17 +6,58 @@ import newTodo from '../mock-data/new-todo.json'
 import allTodos from '../mock-data/all-todos.json'
 import faker from 'faker'
 import mongoose from 'mongoose'
+import { HttpError } from '../../routes/http.error'
 
 let req: Request, res: MockResponse<Response>, next: NextFunction
-
 beforeEach(() => {
   req = httpMocks.createRequest()
   res = httpMocks.createResponse()
   next = jest.fn()
 })
 
-// describe.skip('TodoController.getTodoById', () => {
-describe('TodoController.getTodoById', () => {
+describe('TodoController.updateTodo', () => {
+  it('should have a updateTodo function', () => {
+    expect(typeof TodoController.updateTodo).toBe('function')
+  })
+  it('should call Todo.findByIdAndUpdate', async () => {
+    Todo.findByIdAndUpdate = jest.fn()
+    const id = new mongoose.Types.ObjectId().toHexString()
+    req.params.todoId = id
+    req.body = newTodo
+    await TodoController.updateTodo(req, res, next)
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(Todo.findByIdAndUpdate).toBeCalledWith(id, newTodo, {
+      new: true,
+      useFindAndModify: false,
+    })
+  })
+  it('should return 200 and json data', async () => {
+    const todo = {
+      title: faker.random.words(6),
+    }
+    Todo.findByIdAndUpdate = jest.fn().mockReturnValue(Promise.resolve(todo))
+    req.params.todoId = new mongoose.Types.ObjectId().toHexString()
+    req.body = newTodo
+    await TodoController.updateTodo(req, res, next)
+    expect(res.statusCode).toBe(200)
+    expect(res._getJSONData()).toStrictEqual(todo)
+  })
+
+  it('should return next with http error when on todo found', async () => {
+    Todo.findByIdAndUpdate = jest.fn().mockReturnValue(Promise.resolve(null))
+    await TodoController.updateTodo(req, res, next)
+    expect(next).toBeCalledWith(new HttpError('todo not found', 400))
+  })
+
+  it('should handle errors', async () => {
+    const err = new Error(faker.random.words(10))
+    Todo.findByIdAndUpdate = jest.fn().mockReturnValue(Promise.reject(err))
+    await TodoController.updateTodo(req, res, next)
+    expect(next).toBeCalledWith(err)
+  })
+})
+
+describe.skip('TodoController.getTodoById', () => {
   it('should have a getTodoById function', () => {
     expect(typeof TodoController.getTodoById).toBe('function')
   })
@@ -62,7 +103,7 @@ describe('TodoController.getTodoById', () => {
   })
 })
 
-describe('TodoController.createTodo', () => {
+describe.skip('TodoController.createTodo', () => {
   let spyTodoCreate: jest.SpyInstance
 
   beforeEach(() => {
@@ -116,19 +157,12 @@ describe('TodoController.createTodo', () => {
   })
 })
 
-describe('TodoController.getTodos', () => {
-  // let spyTodoFind: jest.SpyInstance
-
+describe.skip('TodoController.getTodos', () => {
   beforeEach(() => {
-    // spyTodoFind = jest
-    //   .spyOn(Todo, 'find')
-    //   .mockReturnValue(Promise.resolve(allTodos))
     Todo.find = jest.fn().mockReturnValue(Promise.resolve(allTodos))
   })
 
-  afterEach(() => {
-    // Todo.find.mockRestore()
-  })
+  afterEach(() => {})
 
   afterAll(() => {
     jest.restoreAllMocks()
