@@ -1,0 +1,10 @@
+[
+  {
+    "title": "uncompleted todo item",
+    "done": false
+  },
+  {
+    "title": "completed todo item",
+    "done": true
+  }
+]

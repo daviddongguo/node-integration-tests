@@ -17,9 +17,19 @@ describe(pingUrl, () => {
 })
 
 describe(endpointUrl, () => {
-  it(`POST ${endpointUrl}`, async () => {
+  beforeAll(async () => {
     await mongodb.connect()
+  })
+  it(`GET ${endpointUrl}`, async () => {
+    const response = await request(app).get(endpointUrl)
 
+    expect(response.statusCode).toBe(200)
+    const body = response.body as TodoDoc[]
+    expect(Array.isArray(body)).toBe(true)
+    expect(body[0].title).toBeDefined()
+    expect(body[0].done).toBeDefined()
+  })
+  it(`POST ${endpointUrl}`, async () => {
     const response = await request(app).post(endpointUrl).send(newTodo)
 
     expect(response.statusCode).toBe(201)
@@ -27,4 +37,14 @@ describe(endpointUrl, () => {
     expect(body.title).toBe(newTodo.title)
     expect(body.done).toBe(false)
   }, 5000)
+
+  it('should return error 500 on malformed data', async () => {
+    const response = await request(app).post(endpointUrl).send({})
+
+    expect(response.statusCode).toBe(500)
+    const body = response.body as {
+      message?: string
+    }
+    expect(body.message).toContain('validation failed')
+  })
 })
