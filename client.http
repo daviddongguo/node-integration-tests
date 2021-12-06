@@ -24,7 +24,10 @@ content-type: application/json
 
 ###
 
-GET  http://localhost:3000/todos/61aa3b1f0443008788bcf6dd
+GET  http://localhost:3000/todos/
+###
+
+GET  http://localhost:3000/todos/61aa42a5d438a5669c7b7971
 
 
 ###
@@ -37,7 +40,7 @@ GET  http://localhost:3000/todos/61aa3b5dee222f3688bf8efa
 
 ###
 
-PUT http://localhost:3000/todos/61aa3b1f0443008788bcf6dd HTTP/1.1
+PUT http://localhost:3000/todos/61aa42a5d438a5669c7b7971 HTTP/1.1
 content-type: application/json
 
 {

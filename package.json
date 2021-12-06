@@ -23,6 +23,7 @@
     "eslint-plugin-jest": "25.3.0",
     "faker": "5.5.3",
     "jest": "27.4.0",
+    "mongodb-memory-server": "8.0.4",
     "node-mocks-http": "1.11.0",
     "prettier": "2.5.0",
     "supertest": "6.1.6",

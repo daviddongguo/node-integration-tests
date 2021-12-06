@@ -1,10 +1,14 @@
 import { HttpError } from '../routes/http.error'
 import { NextFunction, Request, Response } from 'express'
-import { Todo, TodoDoc } from '../model/todo.model'
+import Todo, { TodoDoc } from '../model/todo.model'
 import mongoose from 'mongoose'
 
 export default {
   createTodo: async (req: Request, res: Response, next: NextFunction) => {
+    const toAddTodo = req.body as TodoDoc
+    if (!toAddTodo || !toAddTodo.title) {
+      return next(new HttpError('validation failed', 400))
+    }
     try {
       const createModel = await Todo.create(req.body)
       res.status(201).json(createModel)
@@ -30,7 +34,7 @@ export default {
         )
       }
       const todo = await Todo.findById(id)
-      return res.status(200).json(todo)
+      res.status(200).json(todo)
     } catch (err) {
       next(err)
     }
@@ -41,12 +45,23 @@ export default {
     try {
       const updatedTodo = await Todo.findByIdAndUpdate(id, toUpdateTodo, {
         new: true,
-        useFindAndModify: false,
       })
       if (!updatedTodo) {
         return next(new HttpError('todo not found', 400))
       }
       res.status(200).json(updatedTodo)
+    } catch (err) {
+      next(err)
+    }
+  },
+  deleteTodo: async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.todoId
+    try {
+      const deletedTod = await Todo.findByIdAndDelete(id)
+      if (!deletedTod) {
+        return next(new HttpError('todo not found', 400))
+      }
+      res.status(200).json(deletedTod)
     } catch (err) {
       next(err)
     }

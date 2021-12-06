@@ -27,4 +27,5 @@ interface TodoModel extends mongoose.Model<TodoDoc> {
 
 const Todo = mongoose.model<TodoDoc, TodoModel>('Todo', TodoSchema)
 
-export { Todo, TodoDoc, TodoAttrs }
+export { TodoDoc, TodoAttrs }
+export default Todo
