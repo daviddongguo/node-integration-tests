@@ -1,8 +1,11 @@
-import dotenv from 'dotenv'
+import { config } from 'dotenv'
 
 if (process.env.NODE_ENV !== 'production') {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  dotenv.config()
+  const result = config()
+  if (result.error) {
+    console.log(result.error)
+  }
+  console.log(result.parsed)
 }
 
 export default {
